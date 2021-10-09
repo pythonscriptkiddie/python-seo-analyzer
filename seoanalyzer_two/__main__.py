@@ -7,7 +7,7 @@ import os
 
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
-from seoanalyzer import analyze
+from seoanalyzer_two import analyze
 
 
 def main(args=None):

@@ -307,8 +307,12 @@ class Page():
         if length == 0:
             self.warn(u'Missing description')
             return
-        elif length < 140:
-            self.warn(u'Description is too short (less than 140 characters): {0}'.format(d))
+        elif length < 96:
+            self.warn(u'Description is too short (less than 96 characters): {0}'.format(d))
+        elif length < 120:
+            self.warn(u'Description may be too short (between 96 and 120 characters): {0}'.format(d))
+        elif length > 140:
+            self.warn(u'Description may be too long (between 120 and 140 characters): {0}'.format(d))
         elif length > 255:
             self.warn(u'Description is too long (more than 255 characters): {0}'.format(d))
 

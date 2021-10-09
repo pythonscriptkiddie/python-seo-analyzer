@@ -288,7 +288,7 @@ class Page():
             self.warn(u'Missing title tag')
             return
         elif length < 10:
-            self.warn(u'Title tag is too short (less than 10 characters): {0}'.format(t))
+            self.warn(u'Title tag length ({0}) is too short (less than 10 characters): {0}'.format(t))
         elif length > 70:
             self.warn(u'Title tag is too long (more than 70 characters): {0}'.format(t))
 
@@ -308,13 +308,13 @@ class Page():
             self.warn(u'Missing description')
             return
         elif length < 96:
-            self.warn(u'Description is too short (less than 96 characters): {0}'.format(d))
+            self.warn(u'Description length ({0} characters) is too short (less than 96 characters): {1}'.format(length, d))
         elif length < 120:
-            self.warn(u'Description may be too short (between 96 and 120 characters): {0}'.format(d))
+            self.warn(u'Description length ({0} characters) may be too short (between 96 and 120 characters): {1}'.format(length, d))
         elif length > 140:
-            self.warn(u'Description may be too long (between 120 and 140 characters): {0}'.format(d))
+            self.warn(u'Description length ({0} characters) may be too long (between 120 and 140 characters): {1}'.format(length, d))
         elif length > 255:
-            self.warn(u'Description is too long (more than 255 characters): {0}'.format(d))
+            self.warn(u'Description length ({0} characters) is too long (more than 255 characters): {1}'.format(length, d))
 
     def visible_tags(self, element):
         if element.parent.name in ['style', 'script', '[document]']:

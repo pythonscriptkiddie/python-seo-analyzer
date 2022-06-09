@@ -1,5 +1,6 @@
 import json
 import time
+from datetime import datetime
 
 from operator import itemgetter
 from seoanalyzer2.website import Website
@@ -8,20 +9,19 @@ def analyze(url, sitemap_url=None, analyze_headings=False,
     analyze_extra_tags=False, follow_links=True,
     min_title_length=10, max_title_length=70,
     min_description_length=120, max_description_length=255):
-    print(min_description_length)
-    print(max_description_length)
-    print(min_title_length)
-    print(max_title_length)
+    #@print(min_description_length)
+    #print(max_description_length)
+    #print(min_title_length)
+    #print(max_title_length)
     start_time = time.time()
-
+    current_time=datetime.now()
+    
     def calc_total_time():
         return time.time() - start_time
 
     output = {'pages': [], 'keywords': [], 'errors': [], 'total_time': calc_total_time()}
 
-    site = Website(url, sitemap_url, analyze_headings, analyze_extra_tags, follow_links,
-                  min_title_length, max_title_length, min_description_length,
-                  max_description_length)
+    site = Website(url, sitemap_url, analyze_headings, analyze_extra_tags, follow_links)
 
     site.crawl()
 
@@ -61,5 +61,6 @@ def analyze(url, sitemap_url=None, analyze_headings=False,
     output['keywords'] = sorted(output['keywords'], key=itemgetter('count'), reverse=True)
 
     output['total_time'] = calc_total_time()
+    output['timestamp'] = current_time.isoformat()
 
     return output

@@ -5,11 +5,13 @@ from xml.dom import minidom
 
 import socket
 
-from seoanalyzer.http import http
-from seoanalyzer.page import Page
+from seoanalyzer2.http import http
+from seoanalyzer2.page import Page
 
 class Website():
-    def __init__(self, base_url, sitemap, analyze_headings, analyze_extra_tags, follow_links):
+    def __init__(self, base_url, sitemap, analyze_headings, analyze_extra_tags, follow_links,
+        min_title_length=10, max_title_length=70,
+        min_description_length=120, max_description_length=255):
         self.base_url = base_url
         self.sitemap = sitemap
         self.analyze_headings = analyze_headings
@@ -22,6 +24,10 @@ class Website():
         self.bigrams = Counter()
         self.trigrams = Counter()
         self.content_hashes = defaultdict(set)
+        self.min_title_length = min_title_length
+        self.max_title_length = max_title_length
+        self.min_description_length = min_description_length
+        self.max_description_length = max_description_length
 
     def check_dns(self, url_to_check):
         try:
@@ -66,7 +72,11 @@ class Website():
 
             page = Page(url=url, base_domain=self.base_url,
                         analyze_headings=self.analyze_headings,
-                        analyze_extra_tags=self.analyze_extra_tags)
+                        analyze_extra_tags=self.analyze_extra_tags,
+                        min_title_length=self.min_title_length,
+                        max_title_length=self.max_title_length,
+                        min_description_length=self.min_description_length,
+                        max_description_length=self.max_description_length)
 
             if page.parsed_url.netloc != page.base_domain.netloc:
                 continue

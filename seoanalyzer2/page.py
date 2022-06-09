@@ -10,8 +10,8 @@ from string import punctuation
 from urllib.parse import urlsplit
 from urllib3.exceptions import HTTPError
 
-from seoanalyzer.http import http
-from seoanalyzer.stemmer import stem
+from seoanalyzer2.http import http
+from seoanalyzer2.stemmer import stem
 
 # This list of English stop words is taken from the "Glasgow Information
 # Retrieval Group". The original list can be found at
@@ -88,7 +88,9 @@ class Page():
     Container for each page and the core analyzer.
     """
 
-    def __init__(self, url='', base_domain='', analyze_headings=False, analyze_extra_tags=False):
+    def __init__(self, url='', base_domain='', analyze_headings=False, analyze_extra_tags=False,
+        min_title_length=10, max_title_length=70,
+        min_description_length=120, max_description_length=255):
         """
         Variables go here, *not* outside of __init__
         """
@@ -98,6 +100,10 @@ class Page():
         self.url = url
         self.analyze_headings = analyze_headings
         self.analyze_extra_tags = analyze_extra_tags
+        self.min_title_length = min_title_length
+        self.max_title_length = max_title_length
+        self.min_description_length = min_description_length
+        self.max_description_length = max_description_length
         self.title = ''
         self.description = ''
         self.keywords = {}
@@ -115,6 +121,8 @@ class Page():
             self.headings = {}
         if analyze_extra_tags:
             self.additional_info = {}
+        #print(self.min_description_length)
+        #print(self.max_description_length)
 
     def talk(self):
         """
@@ -354,9 +362,9 @@ class Page():
         if length == 0:
             self.warn(u'Missing title tag')
             return
-        elif length < 10:
+        elif length < self.min_title_length:
             self.warn(u'Title tag is too short (less than 10 characters): {0}'.format(t))
-        elif length > 70:
+        elif length > self.max_title_length:
             self.warn(u'Title tag is too long (more than 70 characters): {0}'.format(t))
 
     def analyze_description(self):
@@ -374,10 +382,10 @@ class Page():
         if length == 0:
             self.warn(u'Missing description')
             return
-        elif length < 140:
-            self.warn(u'Description is too short (less than 140 characters): {0}'.format(d))
-        elif length > 255:
-            self.warn(u'Description is too long (more than 255 characters): {0}'.format(d))
+        elif length < self.min_description_length:
+            self.warn(f'Description is too short (less than {self.min_description_length} characters): {d}')
+        elif length > self.max_description_length:
+            self.warn(f'Description is too long (more than {self.max_description_length} characters): {f}')
 
     def visible_tags(self, element):
         if element.parent.name in ['style', 'script', '[document]']:

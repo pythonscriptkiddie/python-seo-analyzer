@@ -2,9 +2,16 @@ import json
 import time
 
 from operator import itemgetter
-from seoanalyzer.website import Website
+from seoanalyzer2.website import Website
 
-def analyze(url, sitemap_url=None, analyze_headings=False, analyze_extra_tags=False, follow_links=True):
+def analyze(url, sitemap_url=None, analyze_headings=False,
+    analyze_extra_tags=False, follow_links=True,
+    min_title_length=10, max_title_length=70,
+    min_description_length=120, max_description_length=255):
+    print(min_description_length)
+    print(max_description_length)
+    print(min_title_length)
+    print(max_title_length)
     start_time = time.time()
 
     def calc_total_time():
